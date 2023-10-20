@@ -7,21 +7,28 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "multi-op-qso-logger-1",
+    "productName": "multi-op-qso-logger",
     "version": "0.0.0"
   },
   "tauri": {
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "us.austinh.multi-op-qso-logger",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
-      ]
+      ],
+      "updater": {
+        "active": true,
+        "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIwOUExODFGMDgwRDZGQkQKUldTOWJ3MElIeGlhSUhMZ25oVjlCV09jUzJwTXBxMXJuRU44RXZtTkZXM2RZcTA5YlFzMjF5dU8K",
+        "windows": {
+          "installMode": "passive"
+        }
+      }
     },
     "security": {
       "csp": null
