@@ -1,47 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="styles.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="/main.js" defer></script>
-    <style>
-      .logo.vanilla:hover {
-        filter: drop-shadow(0 0 2em #ffe21c);
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div class="row">
-        <a href="https://tauri.app" target="_blank" rel="noopener">
-          <img src="/assets/tauri.svg" class="logo tauri" alt="Tauri logo" />
-        </a>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-          target="_blank"
-          rel="noopener"
-        >
-          <img
-            src="/assets/javascript.svg"
-            class="logo vanilla"
-            alt="JavaScript logo"
-          />
-        </a>
-      </div>
-
-      <p>Click on the Tauri logo to learn more about the framework</p>
-
-      <form class="row" id="greet-form">
-        <input id="greet-input" placeholder="Enter a name..." />
-        <button type="submit">Greet</button>
-      </form>
-
-      <p id="greet-msg"></p>
-    </div>
-  </body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Home">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+    </head>
+    <body>
+        <h1>Logger</h1>
+        <div class="main">
+            <div class="container">
+                <div class="form">
+                    <form class="qso">
+                        <label for="callsign">Callsign</label>
+                        <input type="text" name="callsign" id="callsign" placeholder="Callsign" required>
+                        <label for="frequency">Frequency</label>
+                        <input type="text" name="frequency" id="frequency" placeholder="Frequency" required>
+                        <label for="mode">Mode</label>
+                        <input type="text" name="mode" id="mode" placeholder="Mode" required>
+                        <label for="rst_sent">RST Sent</label>
+                        <input type="text" name="rst_sent" id="rst_sent" placeholder="RST Sent" required>
+                        <label for="rst_recv">RST Recv</label>
+                        <input type="text" name="rst_recv" id="rst_recv" placeholder="RST Recv" required>
+                        <label for="operator">Operator</label>
+                        <input type="dropdown" list="ops" name="operator" id="operator" placeholder="Operator" required>
+                        <datalist id="ops">
+                            <option value="KE8YGW">
+                        </datalist>
+                        <label for="comment">Comment</label>
+                        <input type="text" name="comment" id="comment" placeholder="Comment" required>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
