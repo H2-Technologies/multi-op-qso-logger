@@ -68,10 +68,9 @@ jobs:
         #add args to tauri build
         with:
           args: "-- --locked"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 
   publish-release:
     permissions:
