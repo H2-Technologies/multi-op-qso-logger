@@ -1,6 +1,13 @@
 name: 'publish'
 
-on: pull_request
+# on a pull request and a push to the main branch
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+  pull_request:
 
 jobs:
   create-release:
