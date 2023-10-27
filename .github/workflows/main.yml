@@ -64,9 +64,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-      - name: tauri info
-        # get tauri info
-        run: npx tauri info
+      - name: Tauri info
+        run: npm run tauri info
       - uses: tauri-apps/tauri-action@v0
         #add args to tauri build
         with:
