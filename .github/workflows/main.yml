@@ -64,8 +64,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-      - name: print cargo info
-        run: cargo tauri info
+      - name: tauri info
+        run: ${tauriScript} info
       - uses: tauri-apps/tauri-action@v0
         #add args to tauri build
         with:
