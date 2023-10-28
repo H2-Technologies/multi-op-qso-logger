@@ -71,7 +71,6 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         #add args to tauri build
         with:
-          args: "-- --locked"
           releaseId: ${{ needs.create-release.outputs.release_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
