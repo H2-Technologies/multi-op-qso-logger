@@ -72,6 +72,7 @@ jobs:
         #add args to tauri build
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
+          tauriScript: cargo tauri
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 
