@@ -1,4 +1,4 @@
-name: 'publish'
+name: 'thread'
 on:
   pull_request:
     branches:
