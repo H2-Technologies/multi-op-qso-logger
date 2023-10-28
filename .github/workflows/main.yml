@@ -69,12 +69,12 @@ jobs:
       - name: Tauri info
         run: cargo tauri info
       - uses: tauri-apps/tauri-action@v0
-        #add args to tauri build
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           tauriScript: cargo tauri
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 
   publish-release:
     permissions:
