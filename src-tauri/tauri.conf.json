@@ -49,7 +49,7 @@
     },
     "updater": {
       "endpoints": [
-        "https://github.com/H2-Technologies/multi-op-qso-logger/release/tag/latest"
+        "https://github.com/H2-Technologies/multi-op-qso-logger/releases/download/Multi-Op-QSO-Logger/latest.json"
       ]
     }
 
