@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "multi-op-qso-logger",
-    "version": "0.1.1-beta.1"
+    "version": "0.1.1.1"
   },
   "tauri": {
     "bundle": {
