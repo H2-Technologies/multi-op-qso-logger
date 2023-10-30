@@ -1,7 +1,6 @@
-import { check } from "@tauri-apps/plugin-updater";
-import { relaunch } from "@tauri-apps/plugin-process";
-const update = await check();
+let updater = window.__TAURI__.updater;
+let update = await updater.check();
 if (update.response.available) {
   await update.downloadAndInstall();
-  await relaunch();
+  await update.relaunch();
 }
