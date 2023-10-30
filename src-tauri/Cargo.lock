@@ -3014,9 +3014,9 @@ dependencies = [
 
 [[package]]
 name = "serde_repr"
-version = "0.1.17"
+version = "0.1.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3081f5ffbb02284dda55132aa26daecedd7372a42417bbbab6f14ab7d6bb9145"
+checksum = "8725e1dfadb3a50f7e5ce0b1a540466f6ed3fe7a0fca2ac2b8b831d31316bd00"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -3542,9 +3542,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-fs"
-version = "2.0.0-alpha.4"
+version = "2.0.0-alpha.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03d163d4478343c26b90b3573980f02c717af5ea482c8d04c64e84a6dadcfc02"
+checksum = "5f55c8088d4d4702d6e26abc684f14b011e32c403f3f0a7cb18dc9b251998ba6"
 dependencies = [
  "anyhow",
  "glob",
@@ -3556,9 +3556,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-http"
-version = "2.0.0-alpha.5"
+version = "2.0.0-alpha.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5d7ee589d24502bb08049493c2b8c8cd72e5e8ed50a2ca5aabc9f1447656686"
+checksum = "0a3a90ff8843b003ee3e64b9383a2eff7792abf2760e58c80984081b962f40ec"
 dependencies = [
  "data-url",
  "glob",
@@ -3574,9 +3574,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-shell"
-version = "2.0.0-alpha.4"
+version = "2.0.0-alpha.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "108ab7284ea9034f588dd6bf74db1cb783c4bee33c7ab0ebe1065723ba990e37"
+checksum = "d1f02d055d65c196fc5d9ec3f04fd5e5a744b9a587c1c642caa535fce8d13c87"
 dependencies = [
  "encoding_rs",
  "log",
@@ -3592,9 +3592,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-updater"
-version = "2.0.0-alpha.4"
+version = "2.0.0-alpha.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc57a7c2b8d40493d73a1b725defd723203e5c4dbce85cda1a899b6b18453b49"
+checksum = "6960df5f0427429b387cf9a8c75898a1841c5f746d8c0563fcea11283111696e"
 dependencies = [
  "base64",
  "dirs-next",
