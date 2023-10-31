@@ -28,7 +28,7 @@ fn main() {
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
-            let handle = app.handle();
+            let handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
                 let _response = handle.updater().expect("REASON").check().await;
             });
