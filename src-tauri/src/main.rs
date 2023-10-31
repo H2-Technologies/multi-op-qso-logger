@@ -20,12 +20,13 @@ pub struct Qso {
     comment: String
 }
 
+
 //invoke("qso_vec", {callsign: "KE8YGW", frequency: 14.255, mode: "SSB", rst_sent: 59, rst_recieved: 59, operator: "KE8YGW", comment: "OHIO"});
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_window::init())
-        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_sql::Builder::default().build())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             let handle = app.handle().clone();
@@ -34,6 +35,7 @@ fn main() {
             });
             Ok(())
         })
+        .plugin(tauri_plugin_window::init())
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
