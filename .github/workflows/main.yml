@@ -98,3 +98,22 @@ jobs:
               draft: false,
               prerelease: false
             })
+  delete-release:
+    # only run this if all three of the matrix jobs fail (i.e. all platforms fail)
+    if: ${{ failure() && needs.build-tauri.result == 'failure' }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    needs: [create-release, build-tauri]
+    env:
+      release_id: ${{ needs.create-release.outputs.release_id }}
+    steps:
+      - name: delete release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.deleteRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: process.env.release_id
+            })
