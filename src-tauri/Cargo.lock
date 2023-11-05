@@ -2062,6 +2062,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-http",
+ "tauri-plugin-process",
  "tauri-plugin-shell",
  "tauri-plugin-updater",
  "tauri-plugin-window",
@@ -3570,6 +3571,15 @@ dependencies = [
  "tauri-plugin-fs",
  "thiserror",
  "url",
+]
+
+[[package]]
+name = "tauri-plugin-process"
+version = "2.0.0-alpha.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7934439a8f9196ec99c385df4be62eb19ce719fd94aaa4c681551f327c60cc75"
+dependencies = [
+ "tauri",
 ]
 
 [[package]]
