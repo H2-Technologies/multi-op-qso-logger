@@ -10,18 +10,6 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Qso {
-    callsign: String,
-    frequency: u16,
-    mode: String,
-    rst_sent: u8,
-    rst_recieved: u8,
-    operator: String,
-    comment: String
-}
-
-
 //invoke("qso_vec", {callsign: "KE8YGW", frequency: 14.255, mode: "SSB", rst_sent: 59, rst_recieved: 59, operator: "KE8YGW", comment: "OHIO"});
 fn main() {
     tauri::Builder::default()
