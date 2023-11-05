@@ -100,7 +100,7 @@ jobs:
             })
   delete-release:
     # only run this if all three of the matrix jobs fail (i.e. all platforms fail)
-    if: ${{ failure() && needs.build-tauri.result == 'failure' }}
+    if: ${{ failure() && needs.build-tauri.result == 'failure' || needs.publish-release.result == 'failure' }}
     permissions:
       contents: write
     runs-on: ubuntu-22.04
