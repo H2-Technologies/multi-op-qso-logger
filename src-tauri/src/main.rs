@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use serde::{Serialize, Deserialize};
 use tauri_plugin_updater::UpdaterExt;
+use tauri::ipc::Response;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -32,7 +33,17 @@ fn main() {
         .setup(|app| {
             let handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
-                let _response = handle.updater().expect("REASON").check().await;
+                let response = handle.updater().expect("REASON").check().await; // If .await?; works in the setup hook you can remove the if let Ok line - can't try that myself right now.
+                if let Ok(response) = response {
+                  if let Some(response) = response {
+                    // The first || {} ignores the download progress
+                    // The second || {} ignores the download finished event
+                    // If you wanna handle them you can write actual functions instead
+                    response.download_and_install(|_,_| {}, || {}).await; // this returns a result you may wanna handle
+                    println!("Update downloaded and installed");
+                    println!("{:?}", response);
+                  }
+                }
             });
             Ok(())
         })
