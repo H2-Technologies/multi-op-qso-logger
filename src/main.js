@@ -1,2 +1,2 @@
-let invoke = window.__TAURI__.tauri;
+let invoke = window.__TAURI__.invoke;
 

@@ -10,6 +10,13 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+#[tauri::command]
+async fn get_OS() -> String {
+    let os = std::env::consts::OS;
+    format!("{}", os);
+    os.to_string()
+}
+
 //invoke("qso_vec", {callsign: "KE8YGW", frequency: 14.255, mode: "SSB", rst_sent: 59, rst_recieved: 59, operator: "KE8YGW", comment: "OHIO"});
 fn main() {
     tauri::Builder::default()
@@ -36,7 +43,7 @@ fn main() {
             Ok(())
         })
         .plugin(tauri_plugin_window::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, get_OS])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
