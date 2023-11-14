@@ -1,3 +1,3 @@
 const windowLink = window.__TAURI__.window;
 
-new windowLink.Window("Setup-Window", { url: "setup.html" });
+new windowLink.Window("Setup", { url: "setup.html", width: 400, height: 400});

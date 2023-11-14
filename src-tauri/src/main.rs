@@ -34,7 +34,7 @@ fn main() {
                     // The first || {} ignores the download progress
                     // The second || {} ignores the download finished event
                     // If you wanna handle them you can write actual functions instead
-                    response.download_and_install(|_,_| {}, || {}).await; // this returns a result you may wanna handle
+                    let _ = response.download_and_install(|_,_| {}, || {}).await; // this returns a result you may wanna handle
                     println!("Update downloaded and installed");
                     println!("{:?}", response);
                   }
