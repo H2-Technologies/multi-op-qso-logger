@@ -34,7 +34,7 @@ fn main() {
             Ok(())
         })
         .plugin(tauri_plugin_window::init())
-        .invoke_handler(tauri::generate_handler![greet, get_OS])
+        .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
