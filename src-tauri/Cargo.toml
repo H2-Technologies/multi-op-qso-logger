@@ -13,7 +13,7 @@ edition = "2021"
 tauri-build = { version = "2.0.0-alpha", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0-alpha", features = ["devtools"] }
+tauri = { version = "2.0.0-alpha.18", features = ["devtools"] }
 tauri-plugin-http = { version = "2.0.0-alpha.4", features = ["json"] }
 tauri-plugin-process = "2.0.0-alpha"
 tauri-plugin-window = "2.0.0-alpha"
