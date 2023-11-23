@@ -1,7 +1,9 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use tauri_plugin_updater::UpdaterExt;
+use tauri_plugin_http::reqwest;
 use csv;
+use std::write;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -19,16 +21,44 @@ struct QSO {
     zip: String
 }
 
+fn download_csv_if_not_present() -> std::path::PathBuf {
+    let system_os = std::env::consts::OS;
+    let docDir: std::path::PathBuf;
+    if system_os == "windows" {
+        let username = std::env::var("USERNAME").unwrap();
+        docDir = std::path::Path::new(&("C:\\Users\\".to_owned() + &username + "\\Documents\\multi-op-qso-logger")).to_path_buf();
+    } else if system_os == "linux" {
+        docDir = std::path::Path::new("/etc/multi-op-qso-logger").to_path_buf();
+    } else if system_os == "macos" {
+        let username = std::process::Command::new("whoami").output().unwrap();
+        let username = String::from_utf8(username.stdout).unwrap();
+        docDir = std::path::Path::new(&("/Users/".to_owned() + &username + "/Library/multi-op-qso-logger")).to_path_buf();
+    } else {
+        docDir = std::path::Path::new("/etc/multi-op-qso-logger").to_path_buf();
+    }
+    if !docDir.exists() {
+        // if the command errors, print the error but don't exit
+        let _ = std::fs::create_dir(docDir.clone()).unwrap();
+    }
+    let csvPath = docDir.join("EN.csv");
+    println!("{:?}", csvPath);
+    if !csvPath.exists() {
+        let file = std::fs::File::create(csvPath.clone()).unwrap();
+    }
+    csvPath.to_path_buf()
+}
+
 #[tauri::command]
 fn parse_csv() {
     let mut qso_vec: Vec<QSO> = Vec::new();
+    let csvPath = download_csv_if_not_present();
+    let mut rdr = csv::Reader::from_path(csvPath).unwrap();
     //the header contains these columns, "lang,number1,blank1,blank2,callsign,letter1,string1,fullname,firstname,middleinit,lastname,blank4,blank5,blank6,blank7,streetaddr,city,state,zip,blank8,blank9,blank10,number2,letter2,blank11,blank12,blank13,blank14,blank15"
-    let mut rdr = csv::Reader::from_path("E:\\github\\multi-op-qso-logger\\EN.csv").unwrap();
     for result in rdr.records() {
-        let record = result;
-        println!("{:?}", record);
+        //let record = result;
+        println!("{:?}", result);
         // print the format of the record
-        println!("{:?}", record.expect("REASON").as_slice());
+        //println!("{:?}", record.expect("REASON").as_slice());
         //let callsign = record.get(4).unwrap();
         //let firstname = record.get(8).unwrap();
         //let lastname = record.get(10).unwrap();
@@ -46,6 +76,14 @@ fn parse_csv() {
         //qso_vec.push(qso);
     }
     //println!("{:?}", qso_vec);
+}
+
+async fn download_and_save(csvPath: std::path::PathBuf) {
+    let mut response = reqwest::get("https://gitlab.austinh.dev/root/ham_radio_logger/-/blob/56d1b79827015d9a2e15b11575c5948c39e5be1f/EN.csv").await.unwrap();
+    println!("Status: {}", response.status());
+    println!("Headers:\n{:#?}", response.headers());
+    println!("Body:\n{}", response.text().await.unwrap());
+    //write!(csvPath, response).unwrap();
 }
 
 //invoke("qso_vec", {callsign: "KE8YGW", frequency: 14.255, mode: "SSB", rst_sent: 59, rst_recieved: 59, operator: "KE8YGW", comment: "OHIO"});

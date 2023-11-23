@@ -5,5 +5,3 @@ async function invokeRust() {
     console.log(res);
     console.log('done');
 }
-
-invokeRust();
