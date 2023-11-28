@@ -21,7 +21,46 @@ struct QSO {
     zip: String
 }
 
-fn download_csv_if_not_present() -> std::path::PathBuf {
+impl QSO {
+    fn new(callsign: String, firstname: String, lastname: String, city: String, state: String, zip: String) -> QSO {
+        QSO {
+            callsign,
+            firstname,
+            lastname,
+            city,
+            state,
+            zip
+        }
+    }
+    fn callsign(&self) -> &str {
+        &self.callsign
+    }
+}
+
+fn config_check() -> std::path::PathBuf {
+    let system_os = std::env::consts::OS;
+    let docDir: std::path::PathBuf;
+    if system_os == "windows" {
+        let username = std::env::var("USERNAME").unwrap();
+        docDir = std::path::Path::new(&("C:\\Users\\".to_owned() + &username + "\\Documents\\multi-op-qso-logger")).to_path_buf();
+    } else if system_os == "linux" {
+        docDir = std::path::Path::new("/etc/multi-op-qso-logger").to_path_buf();
+    } else if system_os == "macos" {
+        let username = std::process::Command::new("whoami").output().unwrap();
+        let username = String::from_utf8(username.stdout).unwrap();
+        docDir = std::path::Path::new(&("/Users/".to_owned() + &username + "/Library/multi-op-qso-logger")).to_path_buf();
+    } else {
+        docDir = std::path::Path::new("/etc/multi-op-qso-logger").to_path_buf();
+    }
+    if !docDir.exists() {
+        // if the command errors, print the error but don't exit
+        let _ = std::fs::create_dir(docDir.clone()).unwrap();
+    }
+    let configPath = docDir.join("config.json");
+    configPath.to_path_buf()
+}
+
+fn csv_path() -> std::path::PathBuf {
     let system_os = std::env::consts::OS;
     let docDir: std::path::PathBuf;
     if system_os == "windows" {
@@ -51,7 +90,7 @@ fn download_csv_if_not_present() -> std::path::PathBuf {
 #[tauri::command]
 fn parse_csv() {
     let mut qso_vec: Vec<QSO> = Vec::new();
-    let csvPath = download_csv_if_not_present();
+    let csvPath = csv_path();
     let mut rdr = csv::Reader::from_path(csvPath).unwrap();
     //the header contains these columns, "lang,number1,blank1,blank2,callsign,letter1,string1,fullname,firstname,middleinit,lastname,blank4,blank5,blank6,blank7,streetaddr,city,state,zip,blank8,blank9,blank10,number2,letter2,blank11,blank12,blank13,blank14,blank15"
     for result in rdr.records() {
@@ -76,6 +115,13 @@ fn parse_csv() {
         //qso_vec.push(qso);
     }
     //println!("{:?}", qso_vec);
+}
+
+#[tauri::command]
+fn check_for_config_file() -> bool {
+    config_check();
+    // check the filesystem for the config file and return true if it exists
+    true
 }
 
 async fn download_and_save(csvPath: std::path::PathBuf) {
