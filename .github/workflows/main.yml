@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - main
-      - master
-      - dev
   pull_request:
 
 jobs:
@@ -23,6 +21,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: install cargo-tauri-version
+        run: cargo install cargo-tauri-version
       - name: get version
         run: echo "PACKAGE_VERSION=$(node version.js)" >> $GITHUB_ENV
       - name: create release

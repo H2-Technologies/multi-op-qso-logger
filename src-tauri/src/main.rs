@@ -3,7 +3,8 @@
 use tauri_plugin_updater::UpdaterExt;
 use tauri_plugin_http::reqwest;
 use csv;
-use std::write;
+use std::env;
+use mysql::prelude::Queryable;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -21,7 +22,46 @@ struct QSO {
     zip: String
 }
 
-fn download_csv_if_not_present() -> std::path::PathBuf {
+impl QSO {
+    fn new(callsign: String, firstname: String, lastname: String, city: String, state: String, zip: String) -> QSO {
+        QSO {
+            callsign,
+            firstname,
+            lastname,
+            city,
+            state,
+            zip
+        }
+    }
+    fn callsign(&self) -> &str {
+        &self.callsign
+    }
+}
+
+fn config_check() -> std::path::PathBuf {
+    let system_os = std::env::consts::OS;
+    let docDir: std::path::PathBuf;
+    if system_os == "windows" {
+        let username = std::env::var("USERNAME").unwrap();
+        docDir = std::path::Path::new(&("C:\\Users\\".to_owned() + &username + "\\Documents\\multi-op-qso-logger")).to_path_buf();
+    } else if system_os == "linux" {
+        docDir = std::path::Path::new("/etc/multi-op-qso-logger").to_path_buf();
+    } else if system_os == "macos" {
+        let username = std::process::Command::new("whoami").output().unwrap();
+        let username = String::from_utf8(username.stdout).unwrap();
+        docDir = std::path::Path::new(&("/Users/".to_owned() + &username + "/Library/multi-op-qso-logger")).to_path_buf();
+    } else {
+        docDir = std::path::Path::new("/etc/multi-op-qso-logger").to_path_buf();
+    }
+    if !docDir.exists() {
+        // if the command errors, print the error but don't exit
+        let _ = std::fs::create_dir(docDir.clone()).unwrap();
+    }
+    let configPath = docDir.join("config.json");
+    configPath.to_path_buf()
+}
+
+fn csv_path() -> std::path::PathBuf {
     let system_os = std::env::consts::OS;
     let docDir: std::path::PathBuf;
     if system_os == "windows" {
@@ -51,7 +91,7 @@ fn download_csv_if_not_present() -> std::path::PathBuf {
 #[tauri::command]
 fn parse_csv() {
     let mut qso_vec: Vec<QSO> = Vec::new();
-    let csvPath = download_csv_if_not_present();
+    let csvPath = csv_path();
     let mut rdr = csv::Reader::from_path(csvPath).unwrap();
     //the header contains these columns, "lang,number1,blank1,blank2,callsign,letter1,string1,fullname,firstname,middleinit,lastname,blank4,blank5,blank6,blank7,streetaddr,city,state,zip,blank8,blank9,blank10,number2,letter2,blank11,blank12,blank13,blank14,blank15"
     for result in rdr.records() {
@@ -78,6 +118,13 @@ fn parse_csv() {
     //println!("{:?}", qso_vec);
 }
 
+#[tauri::command]
+fn check_for_config_file() -> bool {
+    config_check();
+    // check the filesystem for the config file and return true if it exists
+    true
+}
+
 async fn download_and_save(csvPath: std::path::PathBuf) {
     let mut response = reqwest::get("https://gitlab.austinh.dev/root/ham_radio_logger/-/blob/56d1b79827015d9a2e15b11575c5948c39e5be1f/EN.csv").await.unwrap();
     println!("Status: {}", response.status());
@@ -86,8 +133,25 @@ async fn download_and_save(csvPath: std::path::PathBuf) {
     //write!(csvPath, response).unwrap();
 }
 
+fn planetscale_connection() -> mysql::PooledConn {
+    let url = env::var("DATABASE_URL").expect("DATABASE_URL not found");
+    let builder = mysql::OptsBuilder::from_opts(mysql::Opts::from_url(&url).unwrap());
+    let pool = mysql::Pool::new(builder.ssl_opts(mysql::SslOpts::default())).unwrap();
+    let mut conn = pool.get_conn().unwrap();
+    println!("Successfully connected to PlanetScale!");
+    conn
+}
+
+
+fn insert_test_qso(QSO { callsign, firstname, lastname, city, state, zip }: QSO) {
+    let mut conn = planetscale_connection();
+    let query = format!("INSERT INTO qso (callsign, firstname, lastname, city, state, zip) VALUES ('{}', '{}', '{}', '{}', '{}', '{}')", callsign, firstname, lastname, city, state, zip);
+    conn.query_drop(query).unwrap();
+}
+
 //invoke("qso_vec", {callsign: "KE8YGW", frequency: 14.255, mode: "SSB", rst_sent: 59, rst_recieved: 59, operator: "KE8YGW", comment: "OHIO"});
-fn main() {
+#[tokio::main]
+async fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_process::init())
@@ -115,4 +179,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![greet, parse_csv])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+    download_and_save(csv_path()).await;
+    let test_qso: QSO = QSO::new("KE8YGW".to_string(), "Austin".to_string(), "Hadley".to_string(), "Ashland".to_string(), "OH".to_string(), "44805".to_string());
+    insert_test_qso(test_qso);
 }
