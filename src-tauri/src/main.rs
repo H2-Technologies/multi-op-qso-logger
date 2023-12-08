@@ -3,7 +3,8 @@
 use tauri_plugin_updater::UpdaterExt;
 use tauri_plugin_http::reqwest;
 use csv;
-use std::write;
+use std::env;
+use mysql::prelude::Queryable;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -132,8 +133,25 @@ async fn download_and_save(csvPath: std::path::PathBuf) {
     //write!(csvPath, response).unwrap();
 }
 
+fn planetscale_connection() -> mysql::PooledConn {
+    let url = env::var("DATABASE_URL").expect("DATABASE_URL not found");
+    let builder = mysql::OptsBuilder::from_opts(mysql::Opts::from_url(&url).unwrap());
+    let pool = mysql::Pool::new(builder.ssl_opts(mysql::SslOpts::default())).unwrap();
+    let mut conn = pool.get_conn().unwrap();
+    println!("Successfully connected to PlanetScale!");
+    conn
+}
+
+
+fn insert_test_qso(QSO { callsign, firstname, lastname, city, state, zip }: QSO) {
+    let mut conn = planetscale_connection();
+    let query = format!("INSERT INTO qso (callsign, firstname, lastname, city, state, zip) VALUES ('{}', '{}', '{}', '{}', '{}', '{}')", callsign, firstname, lastname, city, state, zip);
+    conn.query_drop(query).unwrap();
+}
+
 //invoke("qso_vec", {callsign: "KE8YGW", frequency: 14.255, mode: "SSB", rst_sent: 59, rst_recieved: 59, operator: "KE8YGW", comment: "OHIO"});
-fn main() {
+#[tokio::main]
+async fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_process::init())
@@ -161,4 +179,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![greet, parse_csv])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+    download_and_save(csv_path()).await;
+    let test_qso: QSO = QSO::new("KE8YGW".to_string(), "Austin".to_string(), "Hadley".to_string(), "Ashland".to_string(), "OH".to_string(), "44805".to_string());
+    insert_test_qso(test_qso);
 }
