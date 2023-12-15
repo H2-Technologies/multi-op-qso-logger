@@ -4389,9 +4389,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-fs"
-version = "2.0.0-alpha.4"
+version = "2.0.0-alpha.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03d163d4478343c26b90b3573980f02c717af5ea482c8d04c64e84a6dadcfc02"
+checksum = "330c81479fdc92bab8609d896249e016404f9fac24a27ddf66e1daafd4db1a35"
 dependencies = [
  "anyhow",
  "glob",
@@ -4403,9 +4403,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-http"
-version = "2.0.0-alpha.5"
+version = "2.0.0-alpha.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5d7ee589d24502bb08049493c2b8c8cd72e5e8ed50a2ca5aabc9f1447656686"
+checksum = "37a0c1808d5fca48de8581884e5e12b445d78954e911c1abc65e601b4e992752"
 dependencies = [
  "data-url",
  "glob",
