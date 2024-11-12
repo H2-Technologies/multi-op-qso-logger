@@ -11,3 +11,9 @@ updates:
       interval: "daily"
     reviewers:
       - "ahadley1124"
+  - package-ecosystem: "cargo" # See documentation for possible values
+    directory: "/src" # Location of package manifests
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "ahadley1124"
