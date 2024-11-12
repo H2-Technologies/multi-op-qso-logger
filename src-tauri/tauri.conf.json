@@ -1,57 +1,35 @@
 {
+  "productName": "group-logger",
+  "version": "0.1.0",
+  "identifier": "com.tauri.dev",
   "build": {
-    "beforeDevCommand": "",
-    "beforeBuildCommand": "",
-    "devPath": "../src",
-    "distDir": "../src",
-    "withGlobalTauri": true
+    "frontendDist": "../dist",
+    "beforeDevCommand": "trunk build",
+    "beforeBuildCommand": "trunk build --release"
   },
-  "package": {
-    "productName": "multi-op-qso-logger",
-    "version": "0.3.0"
-  },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "us.austinh.multi-op-qso-logger",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "updater": {
-        "active": true,
-        "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEzQzFDRkRCOTg4MUVDMDcKUldRSDdJR1kyOC9CRTJjUDJMbHVONkpjckVQTUQzWk5qRVZMM0dnakhrSmF4ZnJUT2NoSHMvVDQK",
-        "windows": {
-          "installMode": "passive"
-        }
-      }
-    },
-    "security": {
-      "csp": null
-    },
+  "app": {
     "windows": [
       {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "multi-op-qso-logger",
+        "title": "Group Contact Logger",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
       }
-    ]
-  },
-  "plugins": {
-    "shell": {
-      "open": true
-    },
-    "updater": {
-      "endpoints": [
-        "https://github.com/H2-Technologies/multi-op-qso-logger/releases/latest/download/latest.json"
-      ]
+    ],
+    "security": {
+      "csp": null
     }
-
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   }
 }
