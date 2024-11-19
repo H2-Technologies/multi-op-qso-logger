@@ -1,3 +1,3 @@
-[submodule "submodules/frontend"]
-	path = submodules/frontend
-	url = https://github.com/ahadley1124/qso-logger-frontend
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/ahadley1124/qso-logger-frontend.git

@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "identifier": "com.tauri.dev",
   "build": {
-    "frontendDist": "../dist",
-    "beforeDevCommand": "trunk build",
-    "beforeBuildCommand": "trunk build --release"
+    "frontendDist": "../frontend/dist",
+    "devUrl": "http://127.0.0.1:4646"
   },
   "app": {
     "windows": [
       {
-        "title": "Group Contact Logger",
+        "title": "group-logger-1",
         "width": 800,
         "height": 600,
         "resizable": true,
